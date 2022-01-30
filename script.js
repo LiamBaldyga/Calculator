@@ -1,3 +1,4 @@
+//Element selections
 const screenText = document.getElementById('screen');
 const buttons = document.querySelectorAll('.griditem');
 const buttonChildren = document.querySelector('#buttons').children;
@@ -5,21 +6,23 @@ const clear = document.querySelector('.clear');
 const ops = document.querySelectorAll('.ops');
 const eq = document.getElementById('=');
 const buttonC = document.getElementById('buttons');
+
+//Variable declarations
 let a = null;
 let b = null;
 let selectedOper = '';
 let total = null;
-const opsDefault = '#CD5C5C'; 
-const opsSelect = '#F08080';
-
 const colors = {
     clear : '#161w616',
     ops : '#CD5C5C',
     opsSel : '#F08080',
     equals : '#E9967A'
 }
+
+//On page load
 window.onload = clearText;
 
+//Function declarations
 function add(a,b) {
     return Number(a) + Number(b);
 } 
@@ -62,6 +65,7 @@ function defaultColor() {
     }
 }
 
+//Event listeners
 for (const button of buttons) {
     button.addEventListener('click', () => {
         if(screenText.textContent.length >= 7) return;
@@ -79,7 +83,7 @@ for (const op of ops) {
         defaultColor();
         a = screenText.textContent;
         selectedOper = op.id;
-        op.style.backgroundColor = opsSelect;
+        op.style.backgroundColor = colors["opsSel"];
         screenText.textContent = 0;
     });
 }
