@@ -1,13 +1,23 @@
 const screenText = document.getElementById('screen');
 const buttons = document.querySelectorAll('.griditem');
+const buttonChildren = document.querySelector('#buttons').children;
 const clear = document.querySelector('.clear');
 const ops = document.querySelectorAll('.ops');
 const eq = document.getElementById('=');
 const buttonC = document.getElementById('buttons');
 let a = null;
 let b = null;
-let oper = '';
+let selectedOper = '';
 let total = null;
+const opsDefault = '#CD5C5C'; 
+const opsSelect = '#F08080';
+
+const colors = {
+    clear : '#161w616',
+    ops : '#CD5C5C',
+    opsSel : '#F08080',
+    equals : '#E9967A'
+}
 window.onload = clearText;
 
 function add(a,b) {
@@ -43,9 +53,13 @@ function clearText() {
     screenText.textContent = 0;
     a = null;
     b = null;
-    // ops.forEach(function(e) {
-    //     e.style.backgroundColor = '#CD5C5C';
-    // })
+    defaultColor();
+}
+
+function defaultColor() {
+    for (let i = 0; i < buttonChildren.length; i++) {
+        buttonChildren[i].style.backgroundColor = colors[buttonChildren[i].classList[0]];
+    }
 }
 
 for (const button of buttons) {
@@ -62,17 +76,20 @@ for (const button of buttons) {
 
 for (const op of ops) {
     op.addEventListener('click', () => {
+        defaultColor();
         a = screenText.textContent;
-        oper = op.id;
-        op.style.backgroundColor = '#F08080';
+        selectedOper = op.id;
+        op.style.backgroundColor = opsSelect;
         screenText.textContent = 0;
     });
 }
 
 eq.onclick = function() {
+    defaultColor();
     if (a == null) return;
     b = screenText.textContent;
-    total = operate(oper, a, b).toString().slice(0,7);
+    total = operate(selectedOper, a, b).toString().slice(0,7);
     screenText.textContent = total;
+
 }
 clear.onclick = clearText;
