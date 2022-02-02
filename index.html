@@ -11,30 +11,38 @@
 </head>
 
 <body>
-    <div class="container">
-        <div id="screen">
-        </div>
-        <div id="buttons">
-            <div class="clear">C</div>
-            <div id="/" class="ops divide">÷</div>
-            <div id="*" class="ops times">×</div>
-            <div class="griditem">7</div>
-            <div class="griditem">8</div>
-            <div class="griditem">9</div>
-            <div id ="-" class="ops subtract">-</div>
-            <div class="griditem">4</div>
-            <div class="griditem">5</div>
-            <div class="griditem">6</div>
-            <div id="+" class="ops add">+</div>
-            <div class="griditem">1</div>
-            <div class="griditem">2</div>
-            <div class="griditem">3</div>
-            <div class="griditem">0</div>
-            <div class="griditem">.</div>
-            <div id="=" class="equals">=</div>
+    <main class="main">
+        <div class="container">
+            <div id="screen">
+                <div class="lastNum">
 
+                </div>
+                <div class="currentNum">
+                    0
+                </div>
+            </div>
+            <div id="buttons">
+                <button id="clear" class="btn long">C</button>
+                <button id="delete" class="btn long">Del</button>
+                <button class="btn" data-num="">7</button>
+                <button class="btn" data-num="">8</button>
+                <button class="btn" data-num="">9</button>
+                <button class="btn ops" data-op="">÷</button>
+                <button class="btn" data-num="">4</button>
+                <button class="btn" data-num="">5</button>
+                <button class="btn" data-num="">6</button>
+                <button class="btn ops" data-op="">×</button>
+                <button class="btn" data-num="">1</button>
+                <button class="btn" data-num="">2</button>
+                <button class="btn" data-num="">3</button>
+                <button class="btn ops" data-op="">+</button>
+                <button id="eq" class="btn">=</button>
+                <button class="btn" data-num="">0</button>
+                <button id="dot" class="btn">.</button>
+                <button class="btn ops" data-op="">-</button>
+            </div>
         </div>
-    </div>
+    </main>
     <script src="script.js"></script>
 </body>
 
