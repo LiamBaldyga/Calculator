@@ -1,6 +1,7 @@
-let displayValue = '';
+let firstValue = '';
 let lastValue = '';
 let currentOp = '';
+let shouldReset = false;
 
 const nums = document.querySelectorAll('[data-num]');
 const ops = document.querySelectorAll('[data-op]');
@@ -49,22 +50,31 @@ function operate(op, a, b) {
 function clearScreen() {
     currentText.textContent = 0;
     lastText.textContent = '';
-    displayValue = '';
+    firstValue = '';
     lastValue = '';
+    currentOp = '';
 }
 
 function appendToCurrent(num) {
-    if(currentText.textContent == 0){
-         currentText.textContent = num;
-         return;
+    if(currentText.textContent == 0 || shouldReset){
+        currentText.textContent = num;
+        shouldReset = false;
     }
-    currentText.textContent += num;
+    else currentText.textContent += num;
 }
 
-function appendToLast(oper) {
-    displayValue = currentText.textContent;
-    lastValue = `${displayValue} ${oper}`;
-    lastText.textContent = lastValue;
+function opSetup(op) {
+    if (currentOp != '') calculate();
+    firstValue = currentText.textContent;
+    currentOp = op;
+    lastText.textContent = `${firstValue} ${currentOp}`
+    shouldReset = true;
+}
+
+function decimal() {
+    if (currentText.textContent == '') currentText.textContent = 0;
+    else if (currentText.textContent.includes('.')) return;
+    currentText.textContent += '.';
 }
 
 function deleteNum() {
@@ -72,11 +82,25 @@ function deleteNum() {
     if (currentText.textContent == '') currentText.textContent = 0;
 }
 
+function calculate() {
+    if (!currentOp || shouldReset) return;
+    lastValue = currentText.textContent;
+    currentText.textContent = round(operate(currentOp, firstValue, lastValue));
+    lastText.textContent = `${firstValue} ${currentOp} ${lastValue} =`;
+    currentOp = '';
+}
+
+function round(num) {
+    return parseFloat(num.toFixed(10));
+}
+
 nums.forEach((button) =>
 button.addEventListener('click', () => appendToCurrent(button.textContent)))
 
 ops.forEach((button) => 
-button.addEventListener('click', () =>  appendToLast(button.textContent)))
+button.addEventListener('click', () =>  opSetup(button.textContent)))
 
-clearBtn.onclick = clearScreen;
-delBtn.onclick = deleteNum;
+clearBtn.addEventListener('click', clearScreen);
+delBtn.addEventListener('click', deleteNum);
+dotBtn.addEventListener('click', decimal);
+eqBtn.addEventListener('click', calculate);
