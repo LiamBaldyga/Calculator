@@ -1,30 +1,19 @@
-//Element selections
-const screenText = document.getElementById('screen');
-const buttons = document.querySelectorAll('.griditem');
-const buttonChildren = document.querySelector('#buttons').children;
-const clear = document.querySelector('.clear');
-const ops = document.querySelectorAll('.ops');
-const eq = document.getElementById('=');
-const buttonC = document.getElementById('buttons');
+let displayValue = '';
+let lastValue = '';
+let currentOp = '';
 
-//Variable declarations
-let a = null;
-let b = null;
-let selectedOper = '';
-let total = null;
-const colors = {
-    clear : '#161w616',
-    ops : '#CD5C5C',
-    opsSel : '#F08080',
-    equals : '#E9967A'
-}
-
-//On page load
-window.onload = clearText;
+const nums = document.querySelectorAll('[data-num]');
+const ops = document.querySelectorAll('[data-op]');
+const clearBtn = document.getElementById('clear');
+const delBtn = document.getElementById('delete');
+const eqBtn = document.getElementById('eq');
+const dotBtn = document.getElementById('dot');
+const lastText = document.querySelector('.lastNum');
+const currentText = document.querySelector('.currentNum');
 
 //Function declarations
 function add(a,b) {
-    return Number(a) + Number(b);
+    return a + b;
 } 
 
 function subtract(a,b) {
@@ -40,60 +29,54 @@ function divide(a,b) {
 }
 
 function operate(op, a, b) {
+    a = Number(a);
+    b = Number(b);
     switch(op) {
         case '+':
             return add(a,b);
         case '-':
             return subtract(a,b);
-        case '*':
+        case '×':
             return multiply(a,b);
-        case '/':
-            return divide(a,b);
+        case '÷':
+            if (b === 0) return null;
+            else return divide(a,b);
+        default:
+            return null;
     }
 }
 
-function clearText() {
-    screenText.textContent = 0;
-    a = null;
-    b = null;
-    defaultColor();
+function clearScreen() {
+    currentText.textContent = 0;
+    lastText.textContent = '';
+    displayValue = '';
+    lastValue = '';
 }
 
-function defaultColor() {
-    for (let i = 0; i < buttonChildren.length; i++) {
-        buttonChildren[i].style.backgroundColor = colors[buttonChildren[i].classList[0]];
+function appendToCurrent(num) {
+    if(currentText.textContent == 0){
+         currentText.textContent = num;
+         return;
     }
+    currentText.textContent += num;
 }
 
-//Event listeners
-for (const button of buttons) {
-    button.addEventListener('click', () => {
-        if(screenText.textContent.length >= 7) return;
-        else if(screenText.textContent == 0) {
-            screenText.textContent = button.textContent;
-        }
-        else {
-        screenText.textContent += button.textContent;
-        }
-    });
+function appendToLast(oper) {
+    displayValue = currentText.textContent;
+    lastValue = `${displayValue} ${oper}`;
+    lastText.textContent = lastValue;
 }
 
-for (const op of ops) {
-    op.addEventListener('click', () => {
-        defaultColor();
-        a = screenText.textContent;
-        selectedOper = op.id;
-        op.style.backgroundColor = colors["opsSel"];
-        screenText.textContent = 0;
-    });
+function deleteNum() {
+    currentText.textContent = currentText.textContent.toString().slice(0, -1);
+    if (currentText.textContent == '') currentText.textContent = 0;
 }
 
-eq.onclick = function() {
-    defaultColor();
-    if (a == null) return;
-    b = screenText.textContent;
-    total = operate(selectedOper, a, b).toString().slice(0,7);
-    screenText.textContent = total;
+nums.forEach((button) =>
+button.addEventListener('click', () => appendToCurrent(button.textContent)))
 
-}
-clear.onclick = clearText;
+ops.forEach((button) => 
+button.addEventListener('click', () =>  appendToLast(button.textContent)))
+
+clearBtn.onclick = clearScreen;
+delBtn.onclick = deleteNum;
