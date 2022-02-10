@@ -47,6 +47,11 @@ function operate(op, a, b) {
     }
 }
 
+function reset() {
+    currentText.textContent = '';
+    shouldReset = false;
+}
+
 function clearScreen() {
     currentText.textContent = 0;
     lastText.textContent = '';
@@ -72,7 +77,8 @@ function opSetup(op) {
 }
 
 function decimal() {
-    if (currentText.textContent == '') currentText.textContent = 0;
+    if(shouldReset) reset();
+    if (currentText.textContent == '') reset();
     else if (currentText.textContent.includes('.')) return;
     currentText.textContent += '.';
 }
@@ -88,6 +94,7 @@ function calculate() {
     currentText.textContent = round(operate(currentOp, firstValue, lastValue));
     lastText.textContent = `${firstValue} ${currentOp} ${lastValue} =`;
     currentOp = '';
+    shouldReset = true;
 }
 
 function round(num) {
